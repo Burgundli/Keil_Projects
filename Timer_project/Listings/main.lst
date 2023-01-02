@@ -1,0 +1,60 @@
+C51 COMPILER V9.59.0.0   MAIN                                                              09/28/2022 10:56:58 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE INCDIR(C:\Keil_v5\C51\INC\SiLABS;C:\SiLa
+                    -bs\MCU\INC) DEBUG OBJECTEXTEND PRINT(.\Listings\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include "C8051F330.h"
+   2          
+   3          extern void Init_Device(); 
+   4          
+   5          sbit LED = P0^0;  //Vyvod P0 budeme nazyvat LED
+   6          sbit LED2 = P0^1;  //Vyvod P0 budeme nazyvat LED
+   7          
+   8          void main(void)
+   9          {
+  10   1        Init_Device(); 
+  11   1        
+  12   1        while(1)
+  13   1        {
+  14   2          /*
+  15   2          while(!TF0);
+  16   2          TL0 = 0x4B;
+  17   2          TH0 = 0xA0;     // pri zápise THO
+  18   2          LED = ~LED; 
+  19   2          TF0 = 0;        //Mazanie indikatora pretecenia
+  20   2        */
+  21   2          if(TF2H)
+  22   2          {
+  23   3            LED = ~LED; 
+  24   3            TF2H = 0; 
+  25   3          }
+  26   2          if(TF2L)
+  27   2          {
+  28   3            LED2 = ~LED2; 
+  29   3            TF2L= 0; 
+  30   3          }
+  31   2          
+  32   2         
+  33   2          
+  34   2        }
+  35   1        
+  36   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     19    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

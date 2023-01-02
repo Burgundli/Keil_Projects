@@ -1,0 +1,143 @@
+C51 COMPILER V9.59.0.0   LM75D                                                             11/22/2022 11:56:54 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE LM75D
+OBJECT MODULE PLACED IN .\Objects\LM75D.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE LM75D.c OPTIMIZE(8,SPEED) BROWSE INCDIR(C:\Silabs\MCU\INC) DEBUG OBJECTE
+                    -XTEND PRINT(.\Listings\LM75D.lst) TABS(2) OBJECT(.\Objects\LM75D.obj)
+
+line level    source
+
+   1          #include "C8051F330.h"
+   2          
+   3          sbit SDA = P0^2;
+   4          sbit SCL = P0^3;
+   5          
+   6          void DelayUs (unsigned int us)    // oneskorenie x us
+   7          {
+   8   1      TMR2L = 0xF3;       //nastavenie pocitocnej hodnoty
+   9   1      TMR2H = 0xFF;
+  10   1        TR2 = 1;      //zapnutie casovaca
+  11   1        TF2H = 0;     // vypnutie priznaku prerusenia
+  12   1        while (us)      // opakuj dokedy us je vacsie ako 1
+  13   1        {
+  14   2          while(!TF2H);     //cakame dokedy je v nule
+  15   2          TF2H = 0;         // vypnutie priznaku prerusenia
+  16   2          us--;
+  17   2        }
+  18   1      }
+  19          
+  20          void starti2c(void)
+  21          {
+  22   1        SDA =1; SCL = 1;
+  23   1        DelayUs(2);
+  24   1        SDA = 0;
+  25   1        DelayUs(2);
+  26   1        SCL = 0;
+  27   1      }                             //start i2c
+  28          
+  29          void poslibyte(unsigned char bytew)  //posli byte
+  30          {
+  31   1        char iii;
+  32   1        for(iii = 0; iii < 8; iii++)
+  33   1        {
+  34   2          SDA = bytew & 0x80;
+  35   2          DelayUs(2);
+  36   2          SCL = 1;
+  37   2          DelayUs(2);
+  38   2          SCL = 0;
+  39   2          bytew <<= 1;   // posun o jeden bit
+  40   2        }
+  41   1      }
+  42          
+  43          void posliack (void)    //potvrdzovaci bit ak citam zo zariadenia
+  44          {
+  45   1        SDA = 0;
+  46   1        DelayUs (2);
+  47   1        SCL = 1;
+  48   1        DelayUs (2);
+  49   1        SCL = 0;
+  50   1        DelayUs (2);
+  51   1        SDA = 1;
+  52   1      }
+  53          
+  54          bit prijmiack(void)   //citam potvrdzovaci bit  ak posielam do zariadenia
+C51 COMPILER V9.59.0.0   LM75D                                                             11/22/2022 11:56:54 PAGE 2   
+
+  55          {
+  56   1        bit OK = 0;
+  57   1        SDA = 1;
+  58   1        DelayUs (2);
+  59   1        SCL = 1;
+  60   1        DelayUs (2);
+  61   1        OK = ~SDA;   // nulou odpoveda zariadenie, preto negujeme odpoved na jednotku
+  62   1        SCL = 0;
+  63   1        DelayUs (2);
+  64   1        return OK;
+  65   1      }
+  66          
+  67          unsigned char prijmibyte(void)
+  68          {
+  69   1        unsigned char iii, Din;
+  70   1        Din = 0x00;
+  71   1        SDA = 1;
+  72   1        DelayUs (2);                                  //prijmi byte i2c
+  73   1        for  (iii = 0; iii < 8; iii++)
+  74   1        {
+  75   2          Din <<= 1;
+  76   2          SCL = 1;
+  77   2          DelayUs (2);
+  78   2          Din |= SDA;
+  79   2          SCL = 0;
+  80   2          DelayUs(2);
+  81   2        }
+  82   1        return(Din);
+  83   1      }
+  84          
+  85          void stopi2c(void)
+  86          {
+  87   1        SDA = SCL = 0;
+  88   1        DelayUs (2);
+  89   1        SCL = 1;
+  90   1        DelayUs (2);
+  91   1        SDA = 1;
+  92   1      }
+  93          
+  94          float Citaj_Teplotu(void)
+  95          {
+  96   1        char bajt;
+  97   1        float teplota;
+  98   1        starti2c();
+  99   1        poslibyte(0x90);    // posiela adresu teplomera LM75D - zapis
+ 100   1        prijmiack();        // Prijmeme odpoved
+ 101   1        poslibyte(0x00);    // Adresa teploty v cipe
+ 102   1        prijmiack();
+ 103   1        starti2c();         // opakovany start pre citanie
+ 104   1        poslibyte(0x91);    // posiela adresu teplomera LM75D - citanie
+ 105   1        prijmiack();        // prijmeme odpoved
+ 106   1        bajt = prijmibyte();   //Nacitanie bajtu z LM75D
+ 107   1        teplota = bajt;
+ 108   1        posliack();
+ 109   1        bajt = prijmibyte();    //Nacitanie bajtu z LM75D
+ 110   1        posliack();
+ 111   1        stopi2c();
+ 112   1        teplota += 0.5;
+ 113   1        
+ 114   1        return teplota;
+ 115   1      }
+
+C51 COMPILER V9.59.0.0   LM75D                                                             11/22/2022 11:56:54 PAGE 3   
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    264    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       5
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----       1
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

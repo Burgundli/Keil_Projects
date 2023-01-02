@@ -1,0 +1,99 @@
+C51 COMPILER V9.59.0.0   MAIN                                                              10/04/2022 11:29:09 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE INCDIR(C:\Keil_v5\C51\INC\SiLABS;C:\SiLa
+                    -bs\MCU\INC) DEBUG OBJECTEXTEND PRINT(.\Listings\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include "C8051F330.h"
+   2          #include "stdio.h"
+   3          #include "string.h"
+   4          
+   5          extern void Init_Device(); 
+   6          
+   7          unsigned char c;
+   8          unsigned int i,a,b;
+   9          float f; 
+  10          
+  11          xdata unsigned char meno[20], priezvisko[20], zasobnik[100];
+  12          
+  13          void main(void)
+  14          {
+  15   1        Init_Device(); 
+  16   1        TI0 = 1;  //Indikacný bit prerušenia pre vysielanie UART
+  17   1        
+  18   1        printf("Hello World\n"); 
+  19   1        
+  20   1        while(1)
+  21   1        {
+  22   2          /*
+  23   2          printf("Zadaj a:\n"); 
+  24   2          scanf("%u", &a); 
+  25   2          printf("Zadaj b:\n"); 
+  26   2          scanf("%u", &b); 
+  27   2          do
+  28   2          {
+  29   2            printf("Zadaj operator:\n");
+  30   2            scanf("%c",  &c);
+  31   2            
+  32   2          }
+  33   2          while((c != '*') && (c != '-') && (c != '+') && (c != '/') && (c != '%')); 
+  34   2          
+  35   2          switch (c)
+  36   2          {
+  37   2            case '*':
+  38   2              i = a * b; 
+  39   2              break; 
+  40   2            case '+':
+  41   2              i = a + b;
+  42   2              break; 
+  43   2            case '-':
+  44   2              i = a - b;
+  45   2              break; 
+  46   2            case '/':
+  47   2              i = a / b;
+  48   2              break;
+  49   2            case '%':
+  50   2              i = a % b;
+  51   2              break;
+  52   2            
+  53   2          }
+  54   2          printf("%u %c %u = %u\n", a, c, b, i); 
+C51 COMPILER V9.59.0.0   MAIN                                                              10/04/2022 11:29:09 PAGE 2   
+
+  55   2          */
+  56   2          printf("Zadaj meno:\n"); 
+  57   2          scanf("%s", &meno[0]); 
+  58   2          printf("Zadaj priezvisko:\n"); 
+  59   2          scanf("%s", &priezvisko[0]); 
+  60   2          printf("Zadaj vek:\n"); 
+  61   2          scanf("%bu", &c); 
+  62   2          
+  63   2          strcpy(&zasobnik[0], meno);
+  64   2          strcat(&zasobnik, " "); 
+  65   2          strcat(&zasobnik, priezvisko); 
+  66   2          strcat(&zasobnik, ","); 
+  67   2          i = strlen(zasobnik); 
+  68   2          sprintf(&zasobnik[i], "%bu rokor\n", c); 
+  69   2          
+  70   2          printf(zasobnik); 
+  71   2        }
+  72   1        
+  73   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    214    ----
+   CONSTANT SIZE    =     79    ----
+   XDATA SIZE       =    140    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     11    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

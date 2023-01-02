@@ -1,0 +1,100 @@
+C51 COMPILER V9.59.0.0   CONFIG                                                            10/11/2022 11:07:40 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE CONFIG
+OBJECT MODULE PLACED IN .\Objects\config.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE config.c OPTIMIZE(8,SPEED) BROWSE INCDIR(C:\Keil_v5\C51\INC\SiLABS;C:\Si
+                    -Labs\MCU\INC) DEBUG OBJECTEXTEND PRINT(.\Listings\config.lst) TABS(2) OBJECT(.\Objects\config.obj)
+
+line level    source
+
+   1          /////////////////////////////////////
+   2          //  Generated Initialization File  //
+   3          /////////////////////////////////////
+   4          
+   5          #include "si_toolchain.h"
+   6          #include "C8051F330_defs.h"
+   7          
+   8          // Peripheral specific initialization functions,
+   9          // Called from the Init_Device() function
+  10          void PCA_Init()
+  11          {
+  12   1          PCA0CN    = 0x40;
+  13   1          PCA0MD    &= ~0x40;
+  14   1          PCA0MD    = 0x02;
+  15   1          PCA0CPM0  = 0x46;
+  16   1          PCA0CPM1  = 0x42;
+  17   1          PCA0CPM2  = 0xC2;
+  18   1      }
+  19          
+  20          void Timer_Init()
+  21          {
+  22   1          TCON      = 0x40;
+  23   1          TMOD      = 0x20;
+  24   1          CKCON     = 0x08;
+  25   1          TH1       = 0xCB;
+  26   1      }
+  27          
+  28          void UART_Init()
+  29          {
+  30   1          SCON0     = 0x10;
+  31   1      }
+  32          
+  33          void Port_IO_Init()
+  34          {
+  35   1          // P0.0  -  Skipped,     Open-Drain, Digital
+  36   1          // P0.1  -  Skipped,     Open-Drain, Digital
+  37   1          // P0.2  -  Skipped,     Open-Drain, Digital
+  38   1          // P0.3  -  Skipped,     Open-Drain, Digital
+  39   1          // P0.4  -  TX0 (UART0), Push-Pull,  Digital
+  40   1          // P0.5  -  RX0 (UART0), Open-Drain, Digital
+  41   1          // P0.6  -  Skipped,     Open-Drain, Digital
+  42   1          // P0.7  -  Skipped,     Open-Drain, Digital
+  43   1      
+  44   1          // P1.0  -  CEX0 (PCA),  Open-Drain, Digital
+  45   1          // P1.1  -  Skipped,     Open-Drain, Digital
+  46   1          // P1.2  -  CEX1 (PCA),  Open-Drain, Digital
+  47   1          // P1.3  -  Skipped,     Open-Drain, Digital
+  48   1          // P1.4  -  CEX2 (PCA),  Open-Drain, Digital
+  49   1          // P1.5  -  Unassigned,  Open-Drain, Digital
+  50   1          // P1.6  -  Unassigned,  Open-Drain, Digital
+  51   1          // P1.7  -  Unassigned,  Open-Drain, Digital
+  52   1      
+  53   1          P0MDOUT   = 0x10;
+  54   1          P0SKIP    = 0xCF;
+C51 COMPILER V9.59.0.0   CONFIG                                                            10/11/2022 11:07:40 PAGE 2   
+
+  55   1          P1SKIP    = 0x0A;
+  56   1          XBR0      = 0x01;
+  57   1          XBR1      = 0x43;
+  58   1      }
+  59          
+  60          void Oscillator_Init()
+  61          {
+  62   1          OSCICN    = 0x82;
+  63   1      }
+  64          
+  65          // Initialization function for device,
+  66          // Call Init_Device() from your main program
+  67          void Init_Device(void)
+  68          {
+  69   1          PCA_Init();
+  70   1          Timer_Init();
+  71   1          UART_Init();
+  72   1          Port_IO_Init();
+  73   1          Oscillator_Init();
+  74   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     71    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

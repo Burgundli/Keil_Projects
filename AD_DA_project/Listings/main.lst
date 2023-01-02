@@ -1,0 +1,172 @@
+C51 COMPILER V9.59.0.0   MAIN                                                              10/25/2022 12:08:42 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE INCDIR(C:\Keil_v5\C51\INC\SiLABS;C:\SiLa
+                    -bs\MCU\INC) DEBUG OBJECTEXTEND PRINT(.\Listings\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include "stdio.h"
+   2          #include "si_toolchain.h"
+   3          #include "C8051F330_defs.h"
+   4          
+   5          extern void Init_Device(); 
+   6          #define UREF 3.0f 
+   7          #define KROK (float) UREF / 511 //1023 pri meraní od GND
+   8            
+   9          unsigned char c,d; 
+  10          int ui_i; 
+  11          float f; 
+  12          unsigned int i; 
+  13          
+  14          void main(void)
+  15          {
+  16   1        Init_Device(); 
+  17   1        TI0 = 1; 
+  18   1        
+  19   1        printf("AD/DA prevodníky príklad\n"); 
+  20   1        while(1)
+  21   1        {
+  22   2          printf("\nVyber prevodník:\n");
+  23   2          printf("1 - AD , 2 - DA"); 
+  24   2          c = getchar(); 
+  25   2          if (c == '1')
+  26   2          {
+  27   3            printf("\nVyber vstup:\n1-P1.0, 2- (P1.1-P1.2), t -teplota\n");
+  28   3            c = getchar(); 
+  29   3            switch(c)
+  30   3            {
+  31   4              case '1':
+  32   4                AMX0N = 0x11; //GND bude zaporny vstup; 
+  33   4                AMX0P = 0x08; // Vstup bude P1.0
+  34   4                AD0INT = 0; 
+  35   4                AD0BUSY = 1;  //Spustenie meranias
+  36   4                while(!AD0INT); //Cakam kym AD0INT nebude v log 1
+  37   4                ui_i = (unsigned int) ADC0H << 8 | ADC0L; 
+  38   4                f = (float) ui_i * KROK; //krok sa pocita UREF /1023 - v simulácií 511
+  39   4                printf("Napatie na P1.0 je %.03f V\n", f); 
+  40   4                break; 
+  41   4              case '2':
+  42   4                AMX0N = 0x0A; //P1.2 bude zaporny vstup; 
+  43   4                AMX0P = 0x09; //Kladny vstup bude P1.1
+  44   4                AD0INT = 0; 
+  45   4                AD0BUSY = 1; 
+  46   4                while(!AD0INT); //Cakam kym AD0INT nebude v log 1
+  47   4                ui_i = (unsigned int) ADC0H << 8 | ADC0L; 
+  48   4                f = (float) ui_i * KROK; //krok sa pocita UREF /1023 - v simulácií 511
+  49   4                printf("Rozdiel napatí P1.1 a P1.2 je %.03f V\n", f); 
+  50   4                break; 
+  51   4              case 't':
+  52   4                AMX0N = 0x11; //GND bude zaporny vstup; 
+  53   4                AMX0P = 0x09; //Kladny vstup bude teplotny snimac
+  54   4                AD0INT = 0; 
+C51 COMPILER V9.59.0.0   MAIN                                                              10/25/2022 12:08:42 PAGE 2   
+
+  55   4                AD0BUSY = 1; 
+  56   4                while(!AD0INT); //Cakam kym AD0INT nebude v log 1
+  57   4                ui_i = (unsigned int) ADC0H << 8 | ADC0L; 
+  58   4                f = (float) ui_i * KROK *1000; //krok sa pocita UREF /1023 - v simulácií 511
+  59   4                f -= 776; 
+  60   4                f/= 2.86; 
+  61   4                printf("Teplota je %.01f C\n", f); 
+  62   4                break; 
+  63   4              }
+  64   3            }
+  65   2            else if (c == '2')
+  66   2            {
+  67   3              printf("\n1 - Vyber rozsah DA prevodnika, 2 - Nastav prud v uA\n"); 
+  68   3              c = getchar();
+  69   3              switch(c)
+  70   3              {
+  71   4                case '1':
+  72   4                  printf("\nVyber rozsah DA prevodnika:\n1 - 500uA, 2 - 1mA, 3 - 2mA\n"); 
+  73   4                  c = getchar(); 
+  74   4                //zistim prud 
+  75   4                  d = IDA0CN & 0x03; 
+  76   4                  i = (IDA0H << 2) | (IDA0L >> 6);
+  77   4                  if (d == 0) f = (float) 1 /2.046; 
+  78   4                  else if (d == 1) f = (float) 1 / 1.023; 
+  79   4                  else f = (float) i *1.95503; 
+  80   4                  if (c == '1')
+  81   4                  {
+  82   5                    IDA0CN &=~ 0x80; //Vypnutie prevodnika  
+  83   5                    IDA0CN &=~ 0x03; //Nulujem bity - nastavenie 500uA
+  84   5                    IDA0CN |= 0x80;  //Zapnutie prevodnika
+  85   5                    
+  86   5                    f = (float) f * 2.046; 
+  87   5                    i = f; 
+  88   5                    i <<= 6; 
+  89   5                    IDA0L = i & 0xFF; //Zapisom do IDA0L sa vystupny prud nemeni  
+  90   5                    IDA0H = i >> 8; //Zapisom do IDA0H sa aktualizuje cely vystup
+  91   5                  }
+  92   4                  else if (c == '2')
+  93   4                  {
+  94   5                    IDA0CN &=~ 0x80; //Vypnutie prevodnika  
+  95   5                    IDA0CN &=~ 0x02; //Nulujem bity - nastavenie 1mA
+  96   5                    IDA0CN |= 0x01; 
+  97   5                    IDA0CN |= 0x80;  //Zapnutie prevodnika
+  98   5                    
+  99   5                    f = (float) f * 1.023; 
+ 100   5                    i = f; 
+ 101   5                    i <<= 6; 
+ 102   5                    IDA0L = i & 0xFF; //Zapisom do IDA0L sa vystupny prud nemeni  
+ 103   5                    IDA0H = i >> 8; //Zapisom do IDA0H sa aktualizuje cely vystup
+ 104   5                  }
+ 105   4                  else if (c == '3')
+ 106   4                  {
+ 107   5                    IDA0CN &=~ 0x80; //Vypnutie prevodnika  
+ 108   5                    IDA0CN &=~ 0x02; //Nulujem bity - nastavenie 
+ 109   5                    IDA0CN |= 0x80;  //Zapnutie prevodnika
+ 110   5                    
+ 111   5                    f = (float) f * 1.95503; 
+ 112   5                    i = f; 
+ 113   5                    i <<= 6; 
+ 114   5                    IDA0L = i & 0xFF; //Zapisom do IDA0L sa vystupny prud nemeni  
+ 115   5                    IDA0H = i >> 8; //Zapisom do IDA0H sa aktualizuje cely vystup
+ 116   5                  }
+C51 COMPILER V9.59.0.0   MAIN                                                              10/25/2022 12:08:42 PAGE 3   
+
+ 117   4                  break; 
+ 118   4                case '2':
+ 119   4                  printf("\nZadaj hodnotu v uA\n"); 
+ 120   4                  scanf("%f", &f);
+ 121   4                  c = IDA0CN & 0x03;
+ 122   4                  if (c == 0) f = (float) f * 2.046; 
+ 123   4                  else if (c == 1) f = (float) f * 1.023;
+ 124   4                  else f = (float) f / 1.95503; 
+ 125   4                  i = f; 
+ 126   4                  d = IDA0CN & 0x03; 
+ 127   4                  if (d == 0)
+ 128   4                    printf("Nastavena hodnota je %0.1f uA\n", (float) i/ 2.046);
+ 129   4                  else if (d == 1)
+ 130   4                    printf("Nastavena hodnota je %0.1f uA\n", (float) i/ 1.023);
+ 131   4                  else 
+ 132   4                    printf("Nastavena hodnota je %0.1f uA\n", (float) i/ 1.95503 * i);
+ 133   4                  i <<= 6;
+ 134   4                  IDA0L = i & 0xFF; 
+ 135   4                  IDA0H = i >> 8; 
+ 136   4                  break; 
+ 137   4              
+ 138   4              }
+ 139   3            
+ 140   3            }
+ 141   2          
+ 142   2          }
+ 143   1        
+ 144   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    969    ----
+   CONSTANT SIZE    =    366    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     10    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

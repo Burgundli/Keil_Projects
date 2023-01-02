@@ -1,0 +1,109 @@
+C51 COMPILER V9.59.0.0   UNTITLED                                                          11/22/2022 11:56:54 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE UNTITLED
+OBJECT MODULE PLACED IN .\Objects\Untitled.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Untitled.c OPTIMIZE(8,SPEED) BROWSE INCDIR(C:\Silabs\MCU\INC) DEBUG OBJE
+                    -CTEXTEND PRINT(.\Listings\Untitled.lst) TABS(2) OBJECT(.\Objects\Untitled.obj)
+
+line level    source
+
+   1          /////////////////////////////////////
+   2          //  Generated Initialization File  //
+   3          /////////////////////////////////////
+   4          
+   5          #include "si_toolchain.h"
+   6          #include "C8051F330_defs.h"
+   7          
+   8          // Peripheral specific initialization functions,
+   9          // Called from the Init_Device() function
+  10          void Reset_Sources_Init()
+  11          {
+  12   1          int i = 0;
+  13   1          VDM0CN    = 0x80;
+  14   1          for (i = 0; i < 350; i++);  // Wait 100us for initialization
+  15   1          RSTSRC    = 0x06;
+  16   1      }
+  17          
+  18          void PCA_Init()
+  19          {
+  20   1          PCA0MD    &= ~0x40;
+  21   1          PCA0MD    = 0x05;
+  22   1          PCA0CPL2  = 0x1E;
+  23   1          PCA0MD    |= 0x40;
+  24   1      }
+  25          
+  26          void Timer_Init()
+  27          {
+  28   1          TCON      = 0x50;
+  29   1          TMOD      = 0x22;
+  30   1          CKCON     = 0x18;
+  31   1          TH1       = 0xCB;
+  32   1          TMR2CN    = 0x04;
+  33   1          TMR2RLL   = 0xF3;
+  34   1          TMR2RLH   = 0xFF;
+  35   1      }
+  36          
+  37          void UART_Init()
+  38          {
+  39   1          SCON0     = 0x10;
+  40   1      }
+  41          
+  42          void Port_IO_Init()
+  43          {
+  44   1          // P0.0  -  Unassigned,  Open-Drain, Digital
+  45   1          // P0.1  -  Unassigned,  Open-Drain, Digital
+  46   1          // P0.2  -  Skipped,     Open-Drain, Digital
+  47   1          // P0.3  -  Skipped,     Open-Drain, Digital
+  48   1          // P0.4  -  TX0 (UART0), Push-Pull,  Digital
+  49   1          // P0.5  -  RX0 (UART0), Open-Drain, Digital
+  50   1          // P0.6  -  Unassigned,  Open-Drain, Digital
+  51   1          // P0.7  -  Unassigned,  Open-Drain, Digital
+  52   1      
+  53   1          // P1.0  -  Unassigned,  Open-Drain, Digital
+  54   1          // P1.1  -  Unassigned,  Open-Drain, Digital
+C51 COMPILER V9.59.0.0   UNTITLED                                                          11/22/2022 11:56:54 PAGE 2   
+
+  55   1          // P1.2  -  Unassigned,  Open-Drain, Digital
+  56   1          // P1.3  -  Unassigned,  Open-Drain, Digital
+  57   1          // P1.4  -  Unassigned,  Open-Drain, Digital
+  58   1          // P1.5  -  Unassigned,  Open-Drain, Digital
+  59   1          // P1.6  -  Unassigned,  Open-Drain, Digital
+  60   1          // P1.7  -  Unassigned,  Open-Drain, Digital
+  61   1      
+  62   1          P0MDOUT   = 0x10;
+  63   1          P0SKIP    = 0x0C;
+  64   1          XBR0      = 0x01;
+  65   1          XBR1      = 0x40;
+  66   1      }
+  67          
+  68          void Oscillator_Init()
+  69          {
+  70   1          OSCICN    = 0x82;
+  71   1      }
+  72          
+  73          // Initialization function for device,
+  74          // Call Init_Device() from your main program
+  75          void Init_Device(void)
+  76          {
+  77   1          Reset_Sources_Init();
+  78   1          PCA_Init();
+  79   1          Timer_Init();
+  80   1          UART_Init();
+  81   1          Port_IO_Init();
+  82   1          Oscillator_Init();
+  83   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     95    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

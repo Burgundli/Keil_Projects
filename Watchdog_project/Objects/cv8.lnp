@@ -1,0 +1,5 @@
+".\Objects\main.obj",
+".\Objects\Untitled.obj",
+".\Objects\LM75D.obj" 
+TO ".\Objects\cv8" 
+PRINT(".\Listings\cv8.m51") RAMSIZE(256) 

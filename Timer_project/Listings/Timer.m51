@@ -1,0 +1,156 @@
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    09/28/2022  10:56:59  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\main.obj, .\Objects\config.obj TO .\Objects\Timer PRINT (.\Listings\Timer.m51) RAM
+>> SIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\main.obj (MAIN)
+  .\Objects\config.obj (CONFIG)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  .\Objects\Timer (MAIN)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            IDATA   0008H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0013H     UNIT         ?PR?MAIN?MAIN
+            CODE    0016H     0010H     UNIT         ?PR?TIMER_INIT?CONFIG
+            CODE    0026H     000CH     UNIT         ?PR?INIT_DEVICE?CONFIG
+            CODE    0032H     000CH     UNIT         ?C_C51STARTUP
+            CODE    003EH     0007H     UNIT         ?PR?PCA_INIT?CONFIG
+            CODE    0045H     0007H     UNIT         ?PR?PORT_IO_INIT?CONFIG
+            CODE    004CH     0004H     UNIT         ?PR?OSCILLATOR_INIT?CONFIG
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\Timer (MAIN)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?MAIN
+
+?PR?MAIN?MAIN
+  +--> ?PR?INIT_DEVICE?CONFIG
+
+?PR?INIT_DEVICE?CONFIG
+  +--> ?PR?PCA_INIT?CONFIG
+  +--> ?PR?TIMER_INIT?CONFIG
+  +--> ?PR?PORT_IO_INIT?CONFIG
+  +--> ?PR?OSCILLATOR_INIT?CONFIG
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\Timer (MAIN)
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  09/28/2022  10:56:59  PAGE 2
+
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        MAIN
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  B:0080H.1       PUBLIC        LED2
+  B:00C8H.7       PUBLIC        TF2H
+  B:00C8H.6       PUBLIC        TF2L
+  C:0003H         PUBLIC        main
+  B:0080H.0       PUBLIC        LED
+  -------         PROC          MAIN
+  C:0003H         LINE#         8
+  C:0003H         LINE#         9
+  C:0003H         LINE#         10
+  C:0006H         LINE#         12
+  C:0006H         LINE#         13
+  C:0006H         LINE#         21
+  C:0009H         LINE#         22
+  C:0009H         LINE#         23
+  C:000BH         LINE#         24
+  C:000DH         LINE#         25
+  C:000DH         LINE#         26
+  C:0010H         LINE#         27
+  C:0010H         LINE#         28
+  C:0012H         LINE#         29
+  C:0014H         LINE#         30
+  C:0014H         LINE#         34
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        MAIN
+
+  -------         MODULE        CONFIG
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:00A4H         PUBLIC        P0MDOUT
+  C:0045H         PUBLIC        Port_IO_Init
+  D:00D9H         PUBLIC        PCA0MD
+  C:004CH         PUBLIC        Oscillator_Init
+  D:00E2H         PUBLIC        XBR1
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  D:00B2H         PUBLIC        OSCICN
+  C:0026H         PUBLIC        Init_Device
+  C:003EH         PUBLIC        PCA_Init
+  D:008CH         PUBLIC        TH0
+  D:008AH         PUBLIC        TL0
+  D:008EH         PUBLIC        CKCON
+  C:0016H         PUBLIC        Timer_Init
+  -------         PROC          PCA_INIT
+  C:003EH         LINE#         10
+  C:003EH         LINE#         11
+  C:003EH         LINE#         12
+  C:0041H         LINE#         13
+  C:0044H         LINE#         14
+  -------         ENDPROC       PCA_INIT
+  -------         PROC          TIMER_INIT
+  C:0016H         LINE#         16
+  C:0016H         LINE#         17
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  09/28/2022  10:56:59  PAGE 3
+
+
+  C:0016H         LINE#         18
+  C:0019H         LINE#         19
+  C:001CH         LINE#         20
+  C:001FH         LINE#         21
+  C:0022H         LINE#         22
+  C:0025H         LINE#         23
+  -------         ENDPROC       TIMER_INIT
+  -------         PROC          PORT_IO_INIT
+  C:0045H         LINE#         25
+  C:0045H         LINE#         26
+  C:0045H         LINE#         45
+  C:0048H         LINE#         46
+  C:004BH         LINE#         47
+  -------         ENDPROC       PORT_IO_INIT
+  -------         PROC          OSCILLATOR_INIT
+  C:004CH         LINE#         49
+  C:004CH         LINE#         50
+  C:004CH         LINE#         51
+  C:004FH         LINE#         52
+  -------         ENDPROC       OSCILLATOR_INIT
+  -------         PROC          INIT_DEVICE
+  C:0026H         LINE#         56
+  C:0026H         LINE#         57
+  C:0026H         LINE#         58
+  C:0029H         LINE#         59
+  C:002CH         LINE#         60
+  C:002FH         LINE#         61
+  -------         ENDPROC       INIT_DEVICE
+  -------         ENDMOD        CONFIG
+
+Program Size: data=9.0 xdata=0 code=80
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

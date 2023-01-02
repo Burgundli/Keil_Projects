@@ -1,0 +1,101 @@
+C51 COMPILER V9.59.0.0   MAIN                                                              11/08/2022 12:17:47 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE INCDIR(C:\Keil_v5\C51\INC\SiLABS;C:\SiLa
+                    -bs\MCU\INC) DEBUG OBJECTEXTEND PRINT(.\Listings\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include "stdio.h"
+   2          #include "si_toolchain.h"
+   3          #include "C8051F330_defs.h"
+   4          
+   5          sbit LED = P0^0; 
+   6          
+   7          #define INBF_SIZE  200
+   8          
+   9          xdata unsigned char buffer[100], input_buffer[INBF_SIZE]; 
+  10          int i, j, buffer_size, vz_i, k, l; 
+  11          bit new_row; 
+  12          
+  13          extern Init_Device(); 
+  14          
+  15          void main(void)
+  16          {
+  17   1        Init_Device(); 
+  18   1        vz_i = 0; 
+  19   1        
+  20   1        while(1)
+  21   1        {
+  22   2          if (i > 99)
+  23   2          {
+  24   3            buffer_size = sprintf(&buffer[0], "Ahoj svet!\n");
+  25   3            j = 0;      
+  26   3            SBUF0 = buffer[j++]; 
+  27   3            i = 0;
+  28   3          }
+  29   2          if (new_row)
+  30   2          {
+  31   3            buffer_size = vz_i; 
+  32   3            for(k = 0; k < vz_i; k++)
+  33   3            {
+  34   4              buffer[k++] = input_buffer[k++]; 
+  35   4            }
+  36   3            l = 0; 
+  37   3            SBUF0 = buffer[l++]; 
+  38   3            buffer_size = vz_i; 
+  39   3            new_row = 0; 
+  40   3          }
+  41   2        }
+  42   1      }
+  43          
+  44          void UART0_ISR(void) interrupt 4 
+  45          {
+  46   1        if (RI0)
+  47   1        {
+  48   2          if (vz_i < INBF_SIZE)
+  49   2          {
+  50   3            input_buffer[vz_i] = SBUF0; 
+  51   3            if (input_buffer[vz_i] == 0x0D)
+  52   3            {
+  53   4              new_row = 1; 
+  54   4            }
+C51 COMPILER V9.59.0.0   MAIN                                                              11/08/2022 12:17:47 PAGE 2   
+
+  55   3            vz_i++; 
+  56   3          }
+  57   2          RI0 = 0; 
+  58   2        }
+  59   1        if (TI0)
+  60   1        {
+  61   2          if (j < buffer_size)
+  62   2          { 
+  63   3            SBUF0 = buffer[j++]; 
+  64   3          }
+  65   2          TI0 = 0; 
+  66   2        }
+  67   1      }
+  68          
+  69          void TMR3_ISR(void) interrupt 14
+  70          {
+  71   1        LED = ~LED; 
+  72   1        i++; 
+  73   1        TMR3CN &=~ 0x80;  
+  74   1      
+  75   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    351    ----
+   CONSTANT SIZE    =     12    ----
+   XDATA SIZE       =    300    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     12    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

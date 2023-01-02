@@ -1,0 +1,4 @@
+".\Objects\main.obj",
+".\Objects\config.obj" 
+TO ".\Objects\ADC_SAR" 
+PRINT(".\Listings\ADC_SAR.m51") RAMSIZE(256) 

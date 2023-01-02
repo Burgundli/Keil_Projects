@@ -1,0 +1,78 @@
+C51 COMPILER V9.59.0.0   MAIN                                                              12/20/2022 22:44:16 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE INCDIR(C:\SiLabs\MCU\INC) DEBUG OBJECTEX
+                    -TEND PRINT(.\Listings\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include "si_toolchain.h"
+   2          #include "C8051F330_defs.h"
+   3          #include "stdio.h"
+   4          
+   5          extern void Init_Device(); 
+   6          unsigned char c; 
+   7          float freq, sysclock; 
+   8          
+   9          unsigned int convert; 
+  10          
+  11          void main(void)
+  12          {
+  13   1        Init_Device(); 
+  14   1      
+  15   1        TI0 = 1; 
+  16   1        
+  17   1        switch((OSCICN & 0x03))
+  18   1        { 
+  19   2          case 0x00:
+  20   2            sysclock = 3.0625; 
+  21   2            break; 
+  22   2          case 0x01:
+  23   2            sysclock = 6.125; 
+  24   2            break; 
+  25   2          case 0x02:
+  26   2            sysclock = 12.25; 
+  27   2            break;
+  28   2          case 0x03:
+  29   2            sysclock = 24.5; 
+  30   2            break;
+  31   2        }
+  32   1        
+  33   1        while(1)
+  34   1        {
+  35   2          printf("Vyber frekvenciu AD prevodnika v rozsahu %0.2f - %0.2f MHz (Hodnota v MHz)", (float)(sysclock / 
+             -32), (float)sysclock); 
+  36   2          scanf("%f", &freq);
+  37   2          if (freq < (sysclock / 32) && freq > sysclock)
+  38   2          {
+  39   3            printf("Hodnota zadana je mimo rozsah");
+  40   3            continue; 
+  41   3          }
+  42   2          convert = (int)((sysclock/ freq) - 1); 
+  43   2          
+  44   2          ADC0CF = convert << 3; 
+  45   2          
+  46   2          printf("Frekvencia SAR registra ADC prevodnika nastavena na hodnotu: %f Hz\n", (float)((sysclock * 10000
+             -00) / (convert + 1)));
+  47   2          
+  48   2        }
+  49   1      
+  50   1      }
+
+
+C51 COMPILER V9.59.0.0   MAIN                                                              12/20/2022 22:44:16 PAGE 2   
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    322    ----
+   CONSTANT SIZE    =    176    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     11    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

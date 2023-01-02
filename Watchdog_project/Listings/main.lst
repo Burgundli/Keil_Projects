@@ -1,0 +1,71 @@
+C51 COMPILER V9.59.0.0   MAIN                                                              11/22/2022 11:56:54 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE INCDIR(C:\Silabs\MCU\INC) DEBUG OBJECTEX
+                    -TEND PRINT(.\Listings\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include "si_toolchain.h"
+   2          #include "C8051F330_defs.h"
+   3          #include "stdio.h"
+   4          
+   5          sbit SDA = P0^2;
+   6          sbit SCL = P0^3;
+   7          
+   8          extern void Init_Device();
+   9          extern float Citaj_Teplotu(void);
+  10          extern void DelayUs(unsigned int us);
+  11          unsigned int i;
+  12          
+  13          void main (void) 
+  14          {
+  15   1        SDA = SCL = 1;        //Inicializacia komunikacnych vodicov
+  16   1        Init_Device();
+  17   1        TI0 = 1;
+  18   1        
+  19   1        i = RSTSRC; 
+  20   1        
+  21   1        if (0x01)
+  22   1          printf("Nulovanie z vyvodu\n"); 
+  23   1        if (0x02)
+  24   1          printf("Nulovanie z start\n"); 
+  25   1        if (0x04)
+  26   1          printf("Nulovanie z detekcia hodin\n"); 
+  27   1        if (0x08)
+  28   1          printf("Nulovanie z watchdog\n"); 
+  29   1        if (0x10)
+  30   1          printf("Nulovanie z komparatora\n"); 
+  31   1        if (0x20)
+  32   1          printf("Nulovanie z vyvodu\n"); 
+  33   1        if (0x40)
+  34   1          printf("Nulovanie z chyby flash\n"); 
+  35   1        
+  36   1        
+  37   1        while(1)    
+  38   1        {
+  39   2          PCA0CPH2 = 0; 
+  40   2          printf("%.01f st C\n", Citaj_Teplotu());
+  41   2          for (i= 0; i < 1000; i++)
+  42   2          DelayUs(1000);
+  43   2        }
+  44   1      }
+  45          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    133    ----
+   CONSTANT SIZE    =    151    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2    ----
+   IDATA SIZE       =   ----    ----
+C51 COMPILER V9.59.0.0   MAIN                                                              11/22/2022 11:56:54 PAGE 2   
+
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,383 @@
+C51 COMPILER V9.59.0.0   MAIN                                                              12/13/2022 07:36:15 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE INCDIR(C:\SiLabs\MCU\INC) DEBUG OBJECTEX
+                    -TEND PRINT(.\Listings\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include "si_toolchain.h"
+   2          #include "C8051F410_defs.h"
+   3          #include "stdio.h"
+   4          
+   5          extern void Init_Device(); 
+   6          
+   7          unsigned char num_monthD[12] = {31,28,31,30,31,30,31,31,30,31,30,31}; 
+   8          bit leap_flag, alarm_flag; 
+   9          
+  10          struct SYS_TIME
+  11          {
+  12            unsigned char seconds; 
+  13            unsigned char minutes; 
+  14            unsigned char hours; 
+  15            unsigned char day;
+  16            unsigned char month; 
+  17            unsigned int year; 
+  18          }; 
+  19          
+  20          struct SYS_TIME systemTime;
+  21          unsigned long timer; 
+  22          
+  23          unsigned char time[6], month, c, alarm_EN; 
+  24          unsigned short days; 
+  25          
+  26          unsigned int i, leap_days, dayOfYear, y, m; 
+  27          
+  28          
+  29          void main (void)
+  30          {
+  31   1        Init_Device();  
+  32   1        
+  33   1        TI0 = 1; 
+  34   1        printf("Unlocking RTC interface....\n"); 
+  35   1        
+  36   1        if (RTC0KEY == 0x00)
+  37   1        {
+  38   2          RTC0KEY = 0xA5;
+  39   2          RTC0KEY = 0xF1;
+  40   2        }
+  41   1        
+  42   1        if (RTC0KEY == 0x02)
+  43   1        {
+  44   2          printf("RTC interface unlocked...\n"); 
+  45   2        }
+  46   1        if (RTC0KEY == 0x03)
+  47   1        {
+  48   2          printf("RTC module disabled until next restart... (Wrong key codes!)\n");
+  49   2          return; 
+  50   2        }
+  51   1        
+  52   1        //smaRTClock setup
+  53   1        
+  54   1        //R/W operation 1 Sysclock + Select reg RTC0XCN
+C51 COMPILER V9.59.0.0   MAIN                                                              12/13/2022 07:36:15 PAGE 2   
+
+  55   1        RTC0ADR = (0x10) | (0x07); 
+  56   1        //XMODE Self-Oscilate Mode
+  57   1        RTC0DAT = 0x40; 
+  58   1        while((RTC0ADR & 0x80) == 0x80);
+  59   1        
+  60   1        //BIASX2 40 kHz
+  61   1        RTC0DAT = 0x20; 
+  62   1        while((RTC0ADR & 0x80) == 0x80); 
+  63   1        
+  64   1        //enable timer incementation
+  65   1        RTC0ADR = (0x10) | (0x06);
+  66   1        RTC0DAT  = 0x10;
+  67   1        while((RTC0ADR & 0x80) == 0x80);  
+  68   1        
+  69   1        //set starting date of RTC timer 
+  70   1        RTC0ADR = 0x00 | 0x10 | 0x80;
+  71   1        
+  72   1      
+  73   1        RTC0DAT = 0x00;
+  74   1        while((RTC0ADR & 0x80) == 0x80);    
+  75   1        RTC0DAT = 0x00; 
+  76   1        while((RTC0ADR & 0x80) == 0x80);  
+  77   1        RTC0DAT = 0xD0;
+  78   1        while((RTC0ADR & 0x80) == 0x80);    
+  79   1        RTC0DAT = 0x9E;
+  80   1        while((RTC0ADR & 0x80) == 0x80);    
+  81   1        RTC0DAT = 0x87;
+  82   1        while((RTC0ADR & 0x80) == 0x80);    
+  83   1        RTC0DAT = 0x63; 
+  84   1        while((RTC0ADR & 0x80) == 0x80); 
+  85   1        
+  86   1        RTC0ADR = (0x10) | (0x06);
+  87   1        RTC0DAT = (0x02) | (0x10);
+  88   1        while((RTC0DAT & 0x02) == 0x02 && ((RTC0ADR & 0x80) == 0x80));
+  89   1        
+  90   1        while(1)
+  91   1        {
+  92   2          printf("\nPress : 1 -> Get current date and time 2 -> Set Alarm\n"); 
+  93   2          c = getchar();
+  94   2          
+  95   2          if (c == '1')
+  96   2          {
+  97   3              //Setting RTC0CAP and inddirect value read with set BUSY bit
+  98   3              RTC0ADR = (0x10) | (0x06) | (0x80);
+  99   3            
+ 100   3              while((RTC0ADR & 0x80) == 0x80);
+ 101   3            
+ 102   3              alarm_EN = RTC0DAT & 0xFF;
+ 103   3            
+ 104   3              if ((alarm_EN & 0x08) == 0x08)
+ 105   3              {
+ 106   4                RTC0ADR = (0x10) | (0x06);
+ 107   4                RTC0DAT = (0x01) | (0x10) | (0x08);
+ 108   4              }
+ 109   3              else
+ 110   3              {
+ 111   4                RTC0ADR = (0x10) | (0x06);
+ 112   4                RTC0DAT = (0x01) | (0x10);
+ 113   4              }   
+ 114   3            
+ 115   3              while((RTC0DAT & 0x01) == 0x01 && ((RTC0ADR & 0x80) == 0x80));
+ 116   3          
+C51 COMPILER V9.59.0.0   MAIN                                                              12/13/2022 07:36:15 PAGE 3   
+
+ 117   3              //set busy bit and autoread from CAPTUREn registers
+ 118   3              RTC0ADR = 0x00 | 0x10 | 0x80 | 0x40;
+ 119   3                  
+ 120   3              while((RTC0ADR & 0x80) == 0x80);
+ 121   3              
+ 122   3              time[0] = RTC0DAT;
+ 123   3              while((RTC0ADR & 0x80) == 0x80);
+ 124   3              
+ 125   3              time[1] = RTC0DAT;
+ 126   3              while((RTC0ADR & 0x80) == 0x80);
+ 127   3              
+ 128   3              time[2] = RTC0DAT;
+ 129   3              while((RTC0ADR & 0x80) == 0x80);
+ 130   3              
+ 131   3              time[3] = RTC0DAT;
+ 132   3              while((RTC0ADR & 0x80) == 0x80);
+ 133   3              
+ 134   3              time[4] = RTC0DAT;
+ 135   3              while((RTC0ADR & 0x80) == 0x80);
+ 136   3              
+ 137   3              time[5] = RTC0DAT;
+ 138   3              while((RTC0ADR & 0x80) == 0x80);
+ 139   3              
+ 140   3              //join values from CAPTUREn registers 
+ 141   3              timer = time[5]; 
+ 142   3              timer <<= 8; 
+ 143   3              timer |= time[4];
+ 144   3              timer <<= 8;
+ 145   3              timer |= time[3]; 
+ 146   3              timer <<= 8; 
+ 147   3              timer |= time[2];
+ 148   3              
+ 149   3              //set offset from timezone (GTM+1) -> 1h = 3600s
+ 150   3              timer += 3600; 
+ 151   3              
+ 152   3              //calculate time  
+ 153   3              systemTime.seconds = timer % 60; 
+ 154   3              timer /= 60; 
+ 155   3              systemTime.minutes = timer % 60; 
+ 156   3              timer /= 60;
+ 157   3              systemTime.hours = timer % 24; 
+ 158   3              timer /= 24;
+ 159   3              
+ 160   3              //reset values
+ 161   3              days = 0; 
+ 162   3              month = 0; 
+ 163   3              leap_days = 0;
+ 164   3              i = 0;    
+ 165   3              
+ 166   3              //calculate accurate year based on leap days
+ 167   3              systemTime.year = 1970 + (timer / 365);
+ 168   3              
+ 169   3              for(i = 1972; i < systemTime.year; i += 4) leap_days++; 
+ 170   3              
+ 171   3              systemTime.year = 1970 + ((timer  - leap_days) / 365); 
+ 172   3              
+ 173   3              dayOfYear = ((timer - leap_days) % 365) + 1;
+ 174   3              
+ 175   3              //check if current year is leap and set days of February 
+ 176   3              if((((systemTime.year % 4) == 0) && ((systemTime.year % 100) != 0)) || ((systemTime.year % 400) == 0))
+ 177   3              {
+ 178   4                num_monthD[1] = 29; 
+C51 COMPILER V9.59.0.0   MAIN                                                              12/13/2022 07:36:15 PAGE 4   
+
+ 179   4                leap_flag = 1; 
+ 180   4              }
+ 181   3              else
+ 182   3              {
+ 183   4                num_monthD[1] = 28; 
+ 184   4                leap_flag = 0; 
+ 185   4              }
+ 186   3            
+ 187   3              //calcualte month and days 
+ 188   3              for(month = 0; month <= 11; month++)
+ 189   3              {
+ 190   4                if (dayOfYear <= days)
+ 191   4                {
+ 192   5                  break; 
+ 193   5                }
+ 194   4                days = days + num_monthD[month]; 
+ 195   4              }
+ 196   3              
+ 197   3              days = days - num_monthD[month - 1]; // -1 offset for breaking in if condition dayOfYear <= days
+ 198   3              systemTime.month = month; 
+ 199   3              systemTime.day = dayOfYear - days; 
+ 200   3              printf("\n"); 
+ 201   3              printf("%02bu/%02bu/%04u %02bu:%02bu:%02bu \n", systemTime.day, systemTime.month, systemTime.year, sys
+             -temTime.hours, systemTime.minutes, systemTime.seconds); 
+ 202   3          }
+ 203   2          else if (c == '2')
+ 204   2          {
+ 205   3              printf("\nSet alarm for (format dd/mm/yyyy hh:mm:ss) :"); 
+ 206   3              scanf("%02bu/%02bu/%04u %02bu:%02bu:%02bu", &systemTime.day, &systemTime.month, &systemTime.year, &sys
+             -temTime.hours, &systemTime.minutes, &systemTime.seconds);
+ 207   3              /*
+ 208   3              systemTime.day = 30; 
+ 209   3              systemTime.month = 11; 
+ 210   3              systemTime.year = 2022; 
+ 211   3              systemTime.hours = 19; 
+ 212   3              systemTime.minutes = 20; 
+ 213   3              systemTime.seconds = 15; 
+ 214   3              */
+ 215   3              m = 0; 
+ 216   3              y = 0; 
+ 217   3              m = systemTime.month; 
+ 218   3              y = systemTime.year; 
+ 219   3              
+ 220   3              //January and February are counted as 13 and 14 of previous year
+ 221   3              if (systemTime.month <= 2)
+ 222   3              {
+ 223   4                m += 12; 
+ 224   4                y -= 1;  
+ 225   4              }
+ 226   3              
+ 227   3              //years to days
+ 228   3              timer = (365 * (long)y);  
+ 229   3              timer += ((long)y / 4);  
+ 230   3              timer -= ((long)y /100); 
+ 231   3              timer += ((long)y / 400);
+ 232   3              //months to days 
+ 233   3              timer += (30 * (long)m); 
+ 234   3              timer += (3 * ((long)m + 1) / 5); 
+ 235   3              timer += systemTime.day;
+ 236   3              //1/1/1970
+ 237   3              timer -= 719561;
+ 238   3              //days to seconds
+C51 COMPILER V9.59.0.0   MAIN                                                              12/13/2022 07:36:15 PAGE 5   
+
+ 239   3              timer *= 86400; 
+ 240   3              
+ 241   3              timer+= (3600 * (long)systemTime.hours) + (60 * (long)systemTime.minutes) + (long)systemTime.seconds; 
+ 242   3              
+ 243   3              //set offset from timezone (GTM+1) -> 1h = 3600s
+ 244   3              timer-= 3600; 
+ 245   3              
+ 246   3              time[2] = (char)(timer & 0xFF);
+ 247   3              timer >>= 8; 
+ 248   3              time[3] = (char)(timer & 0xFF); 
+ 249   3              timer >>= 8;
+ 250   3              time[4] = (char)(timer & 0xFF);         
+ 251   3              timer >>= 8;
+ 252   3              time[5] = (char)(timer & 0xFF);   
+ 253   3              
+ 254   3              //Select RTC0CN
+ 255   3              RTC0ADR = (0x10) | (0x06);
+ 256   3            
+ 257   3              //Disable Alarm with RTC0AEN bit 
+ 258   3              RTC0DAT &=~ (0x08); 
+ 259   3              while((RTC0ADR & 0x80) == 0x80);
+ 260   3            
+ 261   3              RTC0ADR = 0x08 | 0x10;
+ 262   3              
+ 263   3              RTC0DAT = 0x00; 
+ 264   3              RTC0ADR |= 0x80; 
+ 265   3              while((RTC0ADR & 0x80) == 0x80);
+ 266   3              
+ 267   3              RTC0DAT = 0x00; 
+ 268   3              RTC0ADR |= 0x80; 
+ 269   3              while((RTC0ADR & 0x80) == 0x80);
+ 270   3              
+ 271   3              RTC0DAT = time[2]; 
+ 272   3              RTC0ADR |= 0x80; 
+ 273   3              while((RTC0ADR & 0x80) == 0x80);
+ 274   3              
+ 275   3              RTC0DAT = time[3]; 
+ 276   3              RTC0ADR |= 0x80; 
+ 277   3              while((RTC0ADR & 0x80) == 0x80);
+ 278   3              
+ 279   3              RTC0DAT = time[4]; 
+ 280   3              RTC0ADR |= 0x80; 
+ 281   3              while((RTC0ADR & 0x80) == 0x80);
+ 282   3              
+ 283   3              RTC0DAT = time[5]; 
+ 284   3              RTC0ADR |= 0x80; 
+ 285   3              while((RTC0ADR & 0x80) == 0x80);
+ 286   3              
+ 287   3              //Select RTC0CN
+ 288   3              RTC0ADR = (0x10) | (0x06);
+ 289   3            
+ 290   3              //Enable Alarm with RTC0AEN bit 
+ 291   3              RTC0DAT |= (0x08); 
+ 292   3              while((RTC0ADR & 0x80) == 0x80);
+ 293   3              
+ 294   3              printf("\nAlarm set for : %02bu/%02bu/%04u %02bu:%02bu:%02bu \n", systemTime.day, systemTime.month, sy
+             -stemTime.year, systemTime.hours, systemTime.minutes, systemTime.seconds);
+ 295   3              
+ 296   3          }
+ 297   2      
+ 298   2        } 
+ 299   1        
+C51 COMPILER V9.59.0.0   MAIN                                                              12/13/2022 07:36:15 PAGE 6   
+
+ 300   1      
+ 301   1      }
+ 302          
+ 303          void ALRM_ISR(void) interrupt 8 
+ 304          {
+ 305   1        //Select RTC0CN and clear ALRM bit 
+ 306   1        RTC0ADR = (0x10) | (0x06);
+ 307   1        RTC0DAT  &=~ 0x04;
+ 308   1        while((RTC0ADR & 0x80) == 0x80);  
+ 309   1        
+ 310   1        //Disable Alarm with RTC0AEN bit 
+ 311   1        RTC0DAT &=~ (0x08); 
+ 312   1        while((RTC0ADR & 0x80) == 0x80);
+ 313   1        
+ 314   1        //Clear ALARMn registers to avoid constant interrupts
+ 315   1        RTC0ADR = 0x08 | 0x10;
+ 316   1        
+ 317   1        RTC0DAT = 0x00; 
+ 318   1        RTC0ADR |= 0x80; 
+ 319   1        while((RTC0ADR & 0x80) == 0x80);
+ 320   1        
+ 321   1        RTC0DAT = 0x00; 
+ 322   1        RTC0ADR |= 0x80; 
+ 323   1        while((RTC0ADR & 0x80) == 0x80);
+ 324   1        
+ 325   1        RTC0DAT = 0x00; 
+ 326   1        RTC0ADR |= 0x80; 
+ 327   1        while((RTC0ADR & 0x80) == 0x80);
+ 328   1        
+ 329   1        RTC0DAT = 0x00; 
+ 330   1        RTC0ADR |= 0x80; 
+ 331   1        while((RTC0ADR & 0x80) == 0x80);
+ 332   1        
+ 333   1        RTC0DAT = 0x00; 
+ 334   1        RTC0ADR |= 0x80; 
+ 335   1        while((RTC0ADR & 0x80) == 0x80);
+ 336   1        
+ 337   1        RTC0DAT = 0x00; 
+ 338   1        RTC0ADR |= 0x80; 
+ 339   1        while((RTC0ADR & 0x80) == 0x80);
+ 340   1        
+ 341   1        alarm_flag = 1; 
+ 342   1        
+ 343   1        printf("\n---------------GOOD MORNING PEOPLE----------------\n");
+ 344   1        
+ 345   1      }
+ 346          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1848    ----
+   CONSTANT SIZE    =    401    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     44    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      2    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

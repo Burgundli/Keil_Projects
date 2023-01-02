@@ -1,0 +1,159 @@
+C51 COMPILER V9.59.0.0   MAIN                                                              12/09/2022 09:52:00 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE INCDIR(C:\SiLabs\MCU\INC) DEBUG OBJECTEX
+                    -TEND PRINT(.\Listings\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include "si_toolchain.h"
+   2          #include "C8051F410_defs.h"
+   3          #include "stdio.h"
+   4          
+   5          
+   6          extern void Init_Device(); 
+   7          
+   8          #define UREF 3.0f
+   9          #define KROK (float) UREF / 511 // naozaj 1023 pri merani oproti zemi (GND)
+  10            
+  11          unsigned char c, d;
+  12          int ui_i;
+  13          float f;
+  14          unsigned int i;
+  15          
+  16          
+  17          void main (void)
+  18          {
+  19   1        Init_Device(); 
+  20   1        TI0 = 1; 
+  21   1        
+  22   1        while(1)
+  23   1        {
+  24   2          printf("\n1 - Vyber rozsah DA prevodnika, 2 - Nastav prud v mA\n");  
+  25   2          c = getchar();
+  26   2          switch(c)
+  27   2          {
+  28   3            case '1':
+  29   3              printf("\nVyber rozsah DA prevodnika:\n1 - 500uA, 2 - 1mA, 3 - 2mA\n");
+  30   3              c = getchar(); 
+  31   3              //zistim prud 
+  32   3              d = IDA0CN & 0x03; 
+  33   3              i = (IDA0H << 8) | (IDA0L);
+  34   3            
+  35   3              //Konvertovanie hodnoty registra na hodnotu prudu
+  36   3              if (c == '1')
+  37   3              {
+  38   4                  f = (float)(i * 0.0001221); 
+  39   4              }
+  40   3              else if (c == '2')
+  41   3              {
+  42   4                  f = (float)(i * 0.0002442); 
+  43   4              }
+  44   3              else if (c == '3')
+  45   3              {
+  46   4                  f = (float) (i * 0.0004884); 
+  47   4              }
+  48   3              
+  49   3              if (c == '1') 
+  50   3              {
+  51   4                IDA0CN &=~ 0x80; //Vypnutie prevodnika  
+  52   4                IDA0CN &=~ 0x02;  // Nastavujem bity IDA0OMD[0] do 1 a IDA0OMD[1] do 0 - nastavenie 500 uA rozsahu
+  53   4                IDA0CN |= 0x01; 
+  54   4                IDA0CN |= 0x80;  //Zapnutie prevodnika
+C51 COMPILER V9.59.0.0   MAIN                                                              12/09/2022 09:52:00 PAGE 2   
+
+  55   4                
+  56   4                i = (float)(f * 8192); //konverzia prudu na hodnotu registra
+  57   4      
+  58   4                IDA0L = i & 0xFF; //dolne bity vynasobene maskou a vlozene do dolneho registra
+  59   4                IDA0H = i >> 8; //horne bity posunute o 8 bitov do prava a ulozene do horneho registra
+  60   4              }
+  61   3              else if (c == '2') 
+  62   3              {
+  63   4                IDA0CN &=~ 0x80; //Vypnutie prevodnika  
+  64   4                IDA0CN &=~ 0x01;  // Nastavujem bity IDA0OMD[0] do 0 a IDA0OMD[1] do 1 - nastavenie 1mA rozsahu
+  65   4                IDA0CN |= 0x02; 
+  66   4                IDA0CN |= 0x80;  //Zapnutie prevodnika
+  67   4                
+  68   4                i = (float)(f * 4096);  //konverzia prudu na hodnotu registra
+  69   4      
+  70   4                IDA0L = i & 0xFF;  //dolne bity vynasobene maskou a vlozene do dolneho registra
+  71   4                IDA0H = i >> 8; //horne bity posunute o 8 bitov do prava a ulozene do horneho registra
+  72   4              }
+  73   3              else if (c == '3') 
+  74   3              {
+  75   4                IDA0CN &=~ 0x80; //Vypnutie prevodnika  
+  76   4                IDA0CN |= 0x03;  //  nastavenie 2 mA rozsahu  oba bity IDA0OMD[0:1] v 1  
+  77   4                IDA0CN |= 0x80;  //Zapnutie prevodnika
+  78   4                
+  79   4                i = (float)(f * 2048); //konverzia prudu na hodnotu registra
+  80   4      
+  81   4                IDA0L = i & 0xFF;  //dolne bity vynasobene maskou a vlozene do dolneho registra
+  82   4                IDA0H = i >> 8;  //horne bity posunute o 8 bitov do prava a ulozene do horneho registra
+  83   4              }
+  84   3              break; 
+  85   3            case '2':
+  86   3              c = 0x00; 
+  87   3              printf("\nZadaj hodnotu v mA\n"); 
+  88   3              scanf("%f", &f);
+  89   3              c = IDA0CN & 0x03; // citanie rozsahu prevodnika
+  90   3            
+  91   3              switch(c)         
+  92   3              {
+  93   4                //0.5 mA
+  94   4                case 1: 
+  95   4                  i = (float)f * (4096 / 0.5); 
+  96   4                  break; 
+  97   4                //1 mA
+  98   4                case 2: 
+  99   4                  i = (float)f * (4096 / 1);  
+ 100   4                  break;
+ 101   4                //2 mA
+ 102   4                case 3:
+ 103   4                  i = (float)f * (4096 / 2); 
+ 104   4                  break;
+ 105   4              
+ 106   4              }
+ 107   3              if (i > 4095) // kontrola ci zadana hodnota sedi v rozsahu
+ 108   3              {
+ 109   4                printf("\nZadana hodnota je mimi rozsahu!\n "); 
+ 110   4                break; 
+ 111   4              }
+ 112   3              
+ 113   3              d = IDA0CN & 0x03;
+ 114   3              if (d == 1)
+ 115   3                printf("Nastavena hodnota je %.01f mA\n", (float)( i * 0.0001221)); //chyba zle vypisuje v print ale 
+             -dobre zadáva
+C51 COMPILER V9.59.0.0   MAIN                                                              12/09/2022 09:52:00 PAGE 3   
+
+ 116   3              else if  (d == 2)
+ 117   3                printf("Nastavena hodnota je %.01f mA\n", (float)(i * 0.0002442));  //chyba zle vypisuje v print ale 
+             -dobre zadáva
+ 118   3              else if (d == 3)
+ 119   3                printf("Nastavena hodnota je %.01f mA\n", (float)(i * 0.0004884)); //chyba zle vypisuje v print ale d
+             -obre zadáva
+ 120   3              
+ 121   3              IDA0L = i & 0xFF; 
+ 122   3              IDA0H = i >> 8; 
+ 123   3              break; 
+ 124   3          }
+ 125   2      
+ 126   2        }
+ 127   1      
+ 128   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    448    ----
+   CONSTANT SIZE    =    203    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     10    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

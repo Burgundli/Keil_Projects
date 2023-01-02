@@ -1,0 +1,93 @@
+C51 COMPILER V9.59.0.0   MAIN                                                              01/02/2023 17:38:42 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE INCDIR(C:\Keil_v5\C51\INC\SiLABS;C:\SiLa
+                    -bs\MCU\INC) DEBUG OBJECTEXTEND PRINT(.\Listings\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          
+   2          #include "stdio.h"
+   3          #include "si_toolchain.h"
+   4          #include "C8051F330_defs.h"
+   5          
+   6          extern void Init_Device(); 
+   7          unsigned char c; 
+   8          float f; 
+   9          unsigned ui_i; 
+  10          
+  11          #define SYSCLK    12250000
+  12          #define CLCKDIV   4
+  13          #define FPCA      (float) SYSCLK/CLCKDIV
+  14          
+  15          void main(void)
+  16          {
+  17   1        Init_Device(); 
+  18   1        
+  19   1        TI0 = 1; 
+  20   1        
+  21   1        printf("Priklad PCA \n"); 
+  22   1        
+  23   1        while(1)
+  24   1        {
+  25   2          do
+  26   2          {
+  27   3            printf("Vyber modul:\n"); 
+  28   3            printf("1 - frekvencny vystup");
+  29   3            printf("2 - PWM vystup 8-bit");
+  30   3            printf("3 - PWM vystup 16-bit\n");
+  31   3            c = getchar(); 
+  32   3            
+  33   3          } 
+  34   2          while((c != '1') &&(c !='2') && (c != '3'));
+  35   2      
+  36   2          switch (c)
+  37   2          {
+  38   3            case '1':
+  39   3              printf("\nZadaj ziadanu frekvenciu\n"); 
+  40   3              scanf("%f", &f); 
+  41   3              f = FPCA / ( 2*f );
+  42   3              PCA0CPH0 = f; 
+  43   3              f = (float) FPCA / (2* PCA0CPH0);
+  44   3              printf("Nastavena hodnota frekvencie je %0.1f Hz\n", f); 
+  45   3              break; 
+  46   3            case '2':
+  47   3              printf("\nZadaj ziadany cinitel plnenia v %%\n");
+  48   3              scanf("%f", &f); 
+  49   3              f = (float) 256 - (2.56f * f);
+  50   3              PCA0CPH0 = f; 
+  51   3              f = (float) (256 - PCA0CPH0) /2.56f;
+  52   3              printf("Nastaveny cinitel plnenia je %0.3f v %%\n", f); 
+  53   3              break;
+  54   3            case '3':
+C51 COMPILER V9.59.0.0   MAIN                                                              01/02/2023 17:38:42 PAGE 2   
+
+  55   3              printf("\nZadaj ziadany cinitel plnenia v %%\n");
+  56   3              scanf("%f", &f); 
+  57   3              f = (float) 65536 - (65.536f * f);
+  58   3              ui_i = f; 
+  59   3              PCA0CPH2 = ui_i & 0xFF; 
+  60   3              PCA0CPH2 = ui_i >> 8; 
+  61   3              f = (float) (65536 - PCA0CPH2) / 65.536f; 
+  62   3              printf("Nastaveny cinitel plnenia je %0.3f v %%\n", f); 
+  63   3              break; 
+  64   3          }
+  65   2        }
+  66   1        
+  67   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    502    ----
+   CONSTANT SIZE    =    244    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      7    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

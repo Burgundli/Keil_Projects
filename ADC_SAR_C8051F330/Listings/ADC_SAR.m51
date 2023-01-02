@@ -1,0 +1,429 @@
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    12/20/2022  22:44:16  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\main.obj, .\Objects\config.obj TO .\Objects\ADC_SAR PRINT (.\Listings\ADC_SAR.m51)
+>>  RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL WITH FLOATING POINT ARITHMETIC
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\main.obj (MAIN)
+  .\Objects\config.obj (CONFIG)
+  C:\KEIL_V5\C51\LIB\C51FPS.LIB (?C?FPADD)
+  C:\KEIL_V5\C51\LIB\C51FPS.LIB (?C?FPMUL)
+  C:\KEIL_V5\C51\LIB\C51FPS.LIB (?C?FPDIV)
+  C:\KEIL_V5\C51\LIB\C51FPS.LIB (?C?FPCMP)
+  C:\KEIL_V5\C51\LIB\C51FPS.LIB (?C?FCAST)
+  C:\KEIL_V5\C51\LIB\C51FPS.LIB (?C?CASTF)
+  C:\KEIL_V5\C51\LIB\C51FPS.LIB (PRINTF)
+  C:\KEIL_V5\C51\LIB\C51FPS.LIB (SCANF)
+  C:\KEIL_V5\C51\LIB\C51FPS.LIB (?C?FPGETOPN)
+  C:\KEIL_V5\C51\LIB\C51FPS.LIB (?C?FPROUND)
+  C:\KEIL_V5\C51\LIB\C51FPS.LIB (?C?FPCONVERT)
+  C:\KEIL_V5\C51\LIB\C51FPS.LIB (?C?ATOF)
+  C:\KEIL_V5\C51\LIB\C51FPS.LIB (?C?FPNEG)
+  C:\KEIL_V5\C51\LIB\C51FPS.LIB (?C?FTNPWR)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C?CLDPTR)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C?CLDOPTR)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C?CSTPTR)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C?ISTPTR)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C?LNEG)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C?LSTPTR)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C?PLDIDATA)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C?PLDIIDATA)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C?PILDIDATA)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C?CCASE)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (PUTCHAR)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (GETCHAR)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (UNGETC)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (ISSPACE)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C?LSTIDATA)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C?LSTXDATA)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C?LSTPDATA)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (_GETKEY)
+
+
+LINK MAP OF MODULE:  .\Objects\ADC_SAR (MAIN)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     000BH     UNIT         ?DT?MAIN
+            DATA    0013H     0001H     UNIT         ?DT?GETCHAR
+                    0014H     000CH                  *** GAP ***
+            BIT     0020H.0   0001H.3   UNIT         _BIT_GROUP_
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  12/20/2022  22:44:16  PAGE 2
+
+
+            BIT     0021H.3   0000H.1   UNIT         ?BI?GETCHAR
+                    0021H.4   0000H.4                *** GAP ***
+            DATA    0022H     0020H     UNIT         _DATA_GROUP_
+            IDATA   0042H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     069BH     UNIT         ?C?LIB_CODE
+            CODE    069EH     046FH     UNIT         ?PR?PRINTF?PRINTF
+            CODE    0B0DH     034FH     UNIT         ?PR?SCANF?SCANF
+            CODE    0E5CH     0142H     UNIT         ?PR?MAIN?MAIN
+            CODE    0F9EH     00E6H     UNIT         ?PR??C?ATOF??C?ATOF
+            CODE    1084H     00B0H     UNIT         ?CO?MAIN
+            CODE    1134H     0027H     UNIT         ?PR?PUTCHAR?PUTCHAR
+            CODE    115BH     0015H     UNIT         ?PR?INIT_DEVICE?CONFIG
+            CODE    1170H     0013H     UNIT         ?PR?_ISSPACE?ISSPACE
+            CODE    1183H     0011H     UNIT         ?PR?GETCHAR?GETCHAR
+            CODE    1194H     000DH     UNIT         ?PR?TIMER_INIT?CONFIG
+            CODE    11A1H     000DH     UNIT         ?PR?PORT_IO_INIT?CONFIG
+            CODE    11AEH     000CH     UNIT         ?C_C51STARTUP
+            CODE    11BAH     000AH     UNIT         ?PR?ADC_INIT?CONFIG
+            CODE    11C4H     000AH     UNIT         ?PR?_GETKEY?_GETKEY
+            CODE    11CEH     0007H     UNIT         ?PR?PCA_INIT?CONFIG
+            CODE    11D5H     0007H     UNIT         ?PR?INTERRUPTS_INIT?CONFIG
+            CODE    11DCH     0005H     UNIT         ?PR?GETCHAR?UNGETCHAR
+            CODE    11E1H     0004H     UNIT         ?PR?UART_INIT?CONFIG
+            CODE    11E5H     0004H     UNIT         ?PR?OSCILLATOR_INIT?CONFIG
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\ADC_SAR (MAIN)
+
+
+SEGMENT                               BIT_GROUP          DATA_GROUP 
+  +--> CALLED SEGMENT              START    LENGTH     START    LENGTH
+----------------------------------------------------------------------
+?C_C51STARTUP                      -----    -----      -----    -----
+  +--> ?PR?MAIN?MAIN
+
+?PR?MAIN?MAIN                      -----    -----      -----    -----
+  +--> ?PR?INIT_DEVICE?CONFIG
+  +--> ?CO?MAIN
+  +--> ?PR?PRINTF?PRINTF
+  +--> ?PR?SCANF?SCANF
+
+?PR?INIT_DEVICE?CONFIG             -----    -----      -----    -----
+  +--> ?PR?PCA_INIT?CONFIG
+  +--> ?PR?TIMER_INIT?CONFIG
+  +--> ?PR?UART_INIT?CONFIG
+  +--> ?PR?ADC_INIT?CONFIG
+  +--> ?PR?PORT_IO_INIT?CONFIG
+  +--> ?PR?OSCILLATOR_INIT?CONFIG
+  +--> ?PR?INTERRUPTS_INIT?CONFIG
+
+?PR?PRINTF?PRINTF                  0020H.0  0001H.1    0022H    001CH
+  +--> ?PR?PUTCHAR?PUTCHAR
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  12/20/2022  22:44:16  PAGE 3
+
+
+?PR?SCANF?SCANF                    0020H.0  0000H.6    0022H    001EH
+  +--> ?PR?GETCHAR?UNGETCHAR
+  +--> ?PR?_ISSPACE?ISSPACE
+  +--> ?PR?GETCHAR?GETCHAR
+  +--> ?PR??C?ATOF??C?ATOF
+
+?PR?GETCHAR?GETCHAR                -----    -----      -----    -----
+  +--> ?PR?_GETKEY?_GETKEY
+  +--> ?PR?PUTCHAR?PUTCHAR
+
+?PR??C?ATOF??C?ATOF                0020H.6  0000H.5    0040H    0002H
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\ADC_SAR (MAIN)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        MAIN
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:00BCH         PUBLIC        ADC0CF
+  D:0008H         PUBLIC        convert
+  C:0E5CH         PUBLIC        main
+  D:000AH         PUBLIC        freq
+  D:00B2H         PUBLIC        OSCICN
+  B:0098H.1       PUBLIC        TI0
+  D:000EH         PUBLIC        c
+  D:000FH         PUBLIC        sysclock
+  -------         PROC          MAIN
+  C:0E5CH         LINE#         11
+  C:0E5CH         LINE#         12
+  C:0E5CH         LINE#         13
+  C:0E5FH         LINE#         15
+  C:0E61H         LINE#         17
+  C:0E72H         LINE#         18
+  C:0E72H         LINE#         19
+  C:0E72H         LINE#         20
+  C:0E7AH         LINE#         21
+  C:0E7CH         LINE#         22
+  C:0E7CH         LINE#         23
+  C:0E87H         LINE#         24
+  C:0E89H         LINE#         25
+  C:0E89H         LINE#         26
+  C:0E91H         LINE#         27
+  C:0E93H         LINE#         28
+  C:0E93H         LINE#         29
+  C:0E9EH         LINE#         30
+  C:0E9EH         LINE#         31
+  C:0E9EH         LINE#         33
+  C:0E9EH         LINE#         34
+  C:0E9EH         LINE#         35
+  C:0ECCH         LINE#         36
+  C:0EDEH         LINE#         37
+  C:0F13H         LINE#         38
+  C:0F13H         LINE#         39
+  C:0F1CH         LINE#         40
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  12/20/2022  22:44:16  PAGE 4
+
+
+  C:0F1EH         LINE#         41
+  C:0F1EH         LINE#         42
+  C:0F42H         LINE#         44
+  C:0F4FH         LINE#         46
+  C:0F9BH         LINE#         48
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        MAIN
+
+  -------         MODULE        CONFIG
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:00E6H         PUBLIC        EIE1
+  D:00E8H         PUBLIC        ADC0CN
+  D:00A8H         PUBLIC        IE
+  C:11A1H         PUBLIC        Port_IO_Init
+  D:00D9H         PUBLIC        PCA0MD
+  C:11E5H         PUBLIC        Oscillator_Init
+  D:00E1H         PUBLIC        XBR0
+  D:00E2H         PUBLIC        XBR1
+  D:00F1H         PUBLIC        P0MDIN
+  C:11E1H         PUBLIC        UART_Init
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  D:00D4H         PUBLIC        P0SKIP
+  C:11D5H         PUBLIC        Interrupts_Init
+  C:11BAH         PUBLIC        ADC_Init
+  D:00B2H         PUBLIC        OSCICN
+  C:115BH         PUBLIC        Init_Device
+  C:11CEH         PUBLIC        PCA_Init
+  D:008DH         PUBLIC        TH1
+  D:0098H         PUBLIC        SCON0
+  D:00BAH         PUBLIC        AMX0N
+  D:00BBH         PUBLIC        AMX0P
+  D:008EH         PUBLIC        CKCON
+  C:1194H         PUBLIC        Timer_Init
+  -------         PROC          PCA_INIT
+  C:11CEH         LINE#         10
+  C:11CEH         LINE#         11
+  C:11CEH         LINE#         12
+  C:11D1H         LINE#         13
+  C:11D4H         LINE#         14
+  -------         ENDPROC       PCA_INIT
+  -------         PROC          TIMER_INIT
+  C:1194H         LINE#         16
+  C:1194H         LINE#         17
+  C:1194H         LINE#         18
+  C:1197H         LINE#         19
+  C:119AH         LINE#         20
+  C:119DH         LINE#         21
+  C:11A0H         LINE#         22
+  -------         ENDPROC       TIMER_INIT
+  -------         PROC          UART_INIT
+  C:11E1H         LINE#         24
+  C:11E1H         LINE#         25
+  C:11E1H         LINE#         26
+  C:11E4H         LINE#         27
+  -------         ENDPROC       UART_INIT
+  -------         PROC          ADC_INIT
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  12/20/2022  22:44:16  PAGE 5
+
+
+  C:11BAH         LINE#         29
+  C:11BAH         LINE#         30
+  C:11BAH         LINE#         31
+  C:11BDH         LINE#         32
+  C:11C0H         LINE#         33
+  C:11C3H         LINE#         34
+  -------         ENDPROC       ADC_INIT
+  -------         PROC          PORT_IO_INIT
+  C:11A1H         LINE#         36
+  C:11A1H         LINE#         37
+  C:11A1H         LINE#         56
+  C:11A4H         LINE#         57
+  C:11A7H         LINE#         58
+  C:11AAH         LINE#         59
+  C:11ADH         LINE#         60
+  -------         ENDPROC       PORT_IO_INIT
+  -------         PROC          OSCILLATOR_INIT
+  C:11E5H         LINE#         62
+  C:11E5H         LINE#         63
+  C:11E5H         LINE#         64
+  C:11E8H         LINE#         65
+  -------         ENDPROC       OSCILLATOR_INIT
+  -------         PROC          INTERRUPTS_INIT
+  C:11D5H         LINE#         67
+  C:11D5H         LINE#         68
+  C:11D5H         LINE#         69
+  C:11D8H         LINE#         70
+  C:11DBH         LINE#         71
+  -------         ENDPROC       INTERRUPTS_INIT
+  -------         PROC          INIT_DEVICE
+  C:115BH         LINE#         75
+  C:115BH         LINE#         76
+  C:115BH         LINE#         77
+  C:115EH         LINE#         78
+  C:1161H         LINE#         79
+  C:1164H         LINE#         80
+  C:1167H         LINE#         81
+  C:116AH         LINE#         82
+  C:116DH         LINE#         83
+  -------         ENDPROC       INIT_DEVICE
+  -------         ENDMOD        CONFIG
+
+  -------         MODULE        ?C?FPADD
+  C:000AH         PUBLIC        ?C?FPADD
+  C:0006H         PUBLIC        ?C?FPSUB
+  -------         ENDMOD        ?C?FPADD
+
+  -------         MODULE        ?C?FPMUL
+  C:00FBH         PUBLIC        ?C?FPMUL
+  -------         ENDMOD        ?C?FPMUL
+
+  -------         MODULE        ?C?FPDIV
+  C:0204H         PUBLIC        ?C?FPDIV
+  -------         ENDMOD        ?C?FPDIV
+
+  -------         MODULE        ?C?FPCMP
+  C:02A3H         PUBLIC        ?C?FPCMP
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  12/20/2022  22:44:16  PAGE 6
+
+
+  C:02A1H         PUBLIC        ?C?FPCMP3
+  -------         ENDMOD        ?C?FPCMP
+
+  -------         MODULE        ?C?FCAST
+  C:0324H         PUBLIC        ?C?FCASTC
+  C:031FH         PUBLIC        ?C?FCASTI
+  C:031AH         PUBLIC        ?C?FCASTL
+  -------         ENDMOD        ?C?FCAST
+
+  -------         MODULE        ?C?CASTF
+  C:0358H         PUBLIC        ?C?CASTF
+  -------         ENDMOD        ?C?CASTF
+
+  -------         MODULE        PRINTF
+  D:0022H         PUBLIC        ?_PRINTF?BYTE
+  D:0022H         PUBLIC        ?_SPRINTF?BYTE
+  C:0700H         PUBLIC        _PRINTF
+  C:06FAH         PUBLIC        _SPRINTF
+  -------         ENDMOD        PRINTF
+
+  -------         MODULE        SCANF
+  D:0022H         PUBLIC        ?_SCANF?BYTE
+  D:0022H         PUBLIC        ?_SSCANF?BYTE
+  C:0B8FH         PUBLIC        _SCANF
+  C:0B8BH         PUBLIC        _SSCANF
+  -------         ENDMOD        SCANF
+
+  -------         MODULE        ?C?FPROUND
+  C:03D9H         PUBLIC        ?C?FPROUND
+  -------         ENDMOD        ?C?FPROUND
+
+  -------         MODULE        ?C?FPCONVERT
+  C:0408H         PUBLIC        ?C?FPCONVERT
+  -------         ENDMOD        ?C?FPCONVERT
+
+  -------         MODULE        ?C?FPNEG
+  C:050BH         PUBLIC        ?C?FPNEG
+  -------         ENDMOD        ?C?FPNEG
+
+  -------         MODULE        ?C?FTNPWR
+  C:054CH         PUBLIC        ?C?FTNPWR
+  -------         ENDMOD        ?C?FTNPWR
+
+  -------         MODULE        ?C?CLDPTR
+  C:058CH         PUBLIC        ?C?CLDPTR
+  -------         ENDMOD        ?C?CLDPTR
+
+  -------         MODULE        ?C?CLDOPTR
+  C:05A5H         PUBLIC        ?C?CLDOPTR
+  -------         ENDMOD        ?C?CLDOPTR
+
+  -------         MODULE        ?C?CSTPTR
+  C:05D2H         PUBLIC        ?C?CSTPTR
+  -------         ENDMOD        ?C?CSTPTR
+
+  -------         MODULE        ?C?ISTPTR
+  C:05E4H         PUBLIC        ?C?ISTPTR
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  12/20/2022  22:44:16  PAGE 7
+
+
+  -------         ENDMOD        ?C?ISTPTR
+
+  -------         MODULE        ?C?LNEG
+  C:0603H         PUBLIC        ?C?LNEG
+  -------         ENDMOD        ?C?LNEG
+
+  -------         MODULE        ?C?LSTPTR
+  C:0611H         PUBLIC        ?C?LSTPTR
+  -------         ENDMOD        ?C?LSTPTR
+
+  -------         MODULE        ?C?PLDIDATA
+  C:062BH         PUBLIC        ?C?PLDIDATA
+  -------         ENDMOD        ?C?PLDIDATA
+
+  -------         MODULE        ?C?PLDIIDATA
+  C:0634H         PUBLIC        ?C?PLDIIDATA
+  -------         ENDMOD        ?C?PLDIIDATA
+
+  -------         MODULE        ?C?PILDIDATA
+  C:0644H         PUBLIC        ?C?PILDIDATA
+  -------         ENDMOD        ?C?PILDIDATA
+
+  -------         MODULE        ?C?CCASE
+  C:0654H         PUBLIC        ?C?CCASE
+  -------         ENDMOD        ?C?CCASE
+
+  -------         MODULE        PUTCHAR
+  C:1134H         PUBLIC        _PUTCHAR
+  -------         ENDMOD        PUTCHAR
+
+  -------         MODULE        GETCHAR
+  B:0021H.3       PUBLIC        ?C?CHARLOADED
+  D:0013H         PUBLIC        ?_UNGETCHAR?BYTE
+  C:1183H         PUBLIC        GETCHAR
+  -------         ENDMOD        GETCHAR
+
+  -------         MODULE        UNGETC
+  C:11DCH         PUBLIC        _UNGETCHAR
+  -------         ENDMOD        UNGETC
+
+  -------         MODULE        ISSPACE
+  C:1170H         PUBLIC        _isspace
+  -------         ENDMOD        ISSPACE
+
+  -------         MODULE        ?C?LSTIDATA
+  C:067AH         PUBLIC        ?C?LSTIDATA
+  -------         ENDMOD        ?C?LSTIDATA
+
+  -------         MODULE        ?C?LSTXDATA
+  C:0686H         PUBLIC        ?C?LSTXDATA
+  -------         ENDMOD        ?C?LSTXDATA
+
+  -------         MODULE        ?C?LSTPDATA
+  C:0692H         PUBLIC        ?C?LSTPDATA
+  -------         ENDMOD        ?C?LSTPDATA
+
+  -------         MODULE        _GETKEY
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  12/20/2022  22:44:16  PAGE 8
+
+
+  C:11C4H         PUBLIC        _GETKEY
+  -------         ENDMOD        _GETKEY
+
+Program Size: data=54.4 xdata=0 code=4585
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
